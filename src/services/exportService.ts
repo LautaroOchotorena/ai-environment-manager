@@ -89,7 +89,9 @@ export class ExportService {
 		}
 
 		try {
-			const command = this.buildCondaCommand(platform, condaEnv, 'conda env export --no-builds');
+			const command = platform === 'windows'
+				? `conda env export --no-builds -n ${condaEnv}`
+				: this.buildCondaCommand(platform, condaEnv, 'conda env export --no-builds');
 			const output = await this.runCommand(command);
 			await this.writeFile(fileUri, output);
 			vscode.window.showInformationMessage('✓ environment.yml exported successfully');
@@ -107,6 +109,9 @@ export class ExportService {
 		workspaceUri: vscode.Uri
 	): Promise<string | undefined> {
 		if (envType === 'conda' && condaEnv) {
+			if (platform === 'windows') {
+				return `powershell.exe -NoProfile -Command "conda run -n ${condaEnv} python -m pip freeze"`;
+			}
 			return this.buildCondaCommand(platform, condaEnv, 'python -m pip freeze');
 		}
 
