@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { CondaService } from './services/condaService';
+import { ExportService } from './services/exportService';
 import { SettingsService } from './services/settingsService';
 import { TerminalService } from './services/terminalService';
 import { VerificationService } from './services/verificationService';
@@ -20,6 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 	const condaService = new CondaService();
 	const terminalService = new TerminalService(settingsService);
 	const verificationService = new VerificationService(settingsService);
+	const exportService = new ExportService(settingsService);
 	const statusBar = new StatusBarController(settingsService);
 
 	context.subscriptions.push(statusBar);
@@ -123,6 +125,14 @@ export function activate(context: vscode.ExtensionContext) {
 		await terminalService.setPreparedTerminalAsDefault();
 	};
 
+	const exportRequirements = async () => {
+		await exportService.exportRequirements();
+	};
+
+	const exportEnvironmentYaml = async () => {
+		await exportService.exportEnvironmentYaml();
+	};
+
 	const refreshEnvironments = async () => {
 		const platform = settingsService.getPlatform();
 		const envType = settingsService.getPythonEnvType() ?? 'conda';
@@ -168,7 +178,7 @@ export function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 
-		const action = await showStatusMenuQuickPick();
+		const action = await showStatusMenuQuickPick(envType);
 		if (!action) {
 			return;
 		}
@@ -184,7 +194,9 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('aiEnvironmentManager.verifyEnvironment', verifyEnvironment),
 		vscode.commands.registerCommand('aiEnvironmentManager.openPreparedTerminal', openPreparedTerminal),
 		vscode.commands.registerCommand('aiEnvironmentManager.refreshEnvironments', refreshEnvironments),
-		vscode.commands.registerCommand('aiEnvironmentManager.setPreparedTerminalAsDefault', setPreparedTerminalAsDefault)
+		vscode.commands.registerCommand('aiEnvironmentManager.setPreparedTerminalAsDefault', setPreparedTerminalAsDefault),
+		vscode.commands.registerCommand('aiEnvironmentManager.exportRequirements', exportRequirements),
+		vscode.commands.registerCommand('aiEnvironmentManager.exportEnvironmentYaml', exportEnvironmentYaml)
 	);
 
 	context.subscriptions.push(

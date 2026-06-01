@@ -4,7 +4,7 @@ import { Platform, PythonEnvType } from '../types/configuration';
 export async function showPlatformQuickPick(): Promise<Platform | undefined> {
 	const items: Array<vscode.QuickPickItem & { value: Platform }> = [
 		{ label: '🐧 WSL/Linux', description: 'Use Conda or venv inside WSL/Linux', value: 'wsl' },
-		{ label: '🪟 Windows', description: 'Use Conda on Windows', value: 'windows' },
+		{ label: '🪟 Windows', description: 'Use Conda or venv on Windows', value: 'windows' },
 		{ label: '🍎 macOS', description: 'Use Conda or venv on macOS', value: 'macos' },
 	];
 
@@ -57,7 +57,8 @@ export async function showCondaEnvironmentQuickPick(
 	return picked?.label;
 }
 
-export async function showStatusMenuQuickPick(): Promise<string | undefined> {
+
+export async function showStatusMenuQuickPick(envType?: PythonEnvType): Promise<string | undefined> {
 	const items: Array<vscode.QuickPickItem & { command: string }> = [
 		{ label: 'Change Platform', command: 'aiEnvironmentManager.changePlatform' },
 		{ label: 'Change Conda Environment', command: 'aiEnvironmentManager.changeCondaEnvironment' },
@@ -66,6 +67,11 @@ export async function showStatusMenuQuickPick(): Promise<string | undefined> {
 		{ label: 'Open Prepared Terminal', command: 'aiEnvironmentManager.openPreparedTerminal' },
 		{ label: 'Use Prepared Terminal for Commands', command: 'aiEnvironmentManager.setPreparedTerminalAsDefault' },
 	];
+
+	items.push({ label: 'Export requirements.txt', command: 'aiEnvironmentManager.exportRequirements' });
+	if (envType !== 'venv') {
+		items.push({ label: 'Export environment.yml', command: 'aiEnvironmentManager.exportEnvironmentYaml' });
+	}
 
 	const picked = await vscode.window.showQuickPick(items, {
 		placeHolder: 'AI Environment Manager',
