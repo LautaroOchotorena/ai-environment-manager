@@ -1,0 +1,124 @@
+{
+  "name": "ai-environment-manager",
+  "displayName": "AI Environment Manager",
+  "description": "A VS Code extension that lets developers configure and manage the correct execution environment for AI coding agents on a per-workspace basis. Easily select whether a project uses a Conda environment in Windows or WSL, prepare terminals automatically, verify environment readiness, and ensure tools like GitHub Copilot, ChatGPT, Cline, Roo Code, and Continue operate with the intended Python interpreter and dependencies.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.120.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:aiEnvironmentManager.configureEnvironment",
+    "onCommand:aiEnvironmentManager.changePlatform",
+    "onCommand:aiEnvironmentManager.changeCondaEnvironment",
+    "onCommand:aiEnvironmentManager.verifyEnvironment",
+    "onCommand:aiEnvironmentManager.openPreparedTerminal",
+    "onCommand:aiEnvironmentManager.refreshEnvironments",
+    "onCommand:aiEnvironmentManager.setPreparedTerminalAsDefault",
+    "onCommand:aiEnvironmentManager.changePythonEnvironmentType"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "aiEnvironmentManager.configureEnvironment",
+        "title": "AI Environment Manager: Configure Environment"
+      },
+      {
+        "command": "aiEnvironmentManager.changePlatform",
+        "title": "AI Environment Manager: Change Platform"
+      },
+      {
+        "command": "aiEnvironmentManager.changeCondaEnvironment",
+        "title": "AI Environment Manager: Change Conda Environment"
+      },
+      {
+        "command": "aiEnvironmentManager.verifyEnvironment",
+        "title": "AI Environment Manager: Verify Environment"
+      },
+      {
+        "command": "aiEnvironmentManager.openPreparedTerminal",
+        "title": "AI Environment Manager: Open Prepared Terminal"
+      },
+      {
+        "command": "aiEnvironmentManager.refreshEnvironments",
+        "title": "AI Environment Manager: Refresh Environments"
+      },
+      {
+        "command": "aiEnvironmentManager.setPreparedTerminalAsDefault",
+        "title": "AI Environment Manager: Use Prepared Terminal for Commands"
+      },
+      {
+        "command": "aiEnvironmentManager.changePythonEnvironmentType",
+        "title": "AI Environment Manager: Change Environment Type"
+      }
+    ],
+    "configuration": {
+      "title": "AI Environment Manager",
+      "properties": {
+        "aiEnvironmentManager.platform": {
+          "type": "string",
+          "enum": [
+            "windows",
+            "wsl",
+            "macos"
+          ],
+          "markdownDescription": "Platform where the environment runs. Use wsl for WSL/Linux.",
+          "scope": "resource"
+        },
+        "aiEnvironmentManager.pythonEnvType": {
+          "type": "string",
+          "enum": [
+            "conda",
+            "venv"
+          ],
+          "markdownDescription": "Python environment type to use.",
+          "scope": "resource"
+        },
+        "aiEnvironmentManager.condaEnv": {
+          "type": "string",
+          "markdownDescription": "Name of the Conda environment to use.",
+          "scope": "resource"
+        },
+        "aiEnvironmentManager.venvPath": {
+          "type": "string",
+          "markdownDescription": "Relative path to the venv/virtualenv folder (for example: .venv).",
+          "scope": "resource"
+        },
+        "aiEnvironmentManager.condaShPathWslLinux": {
+          "type": "string",
+          "default": "~/miniconda3/etc/profile.d/conda.sh",
+          "markdownDescription": "Path to conda.sh in WSL/Linux.",
+          "scope": "resource"
+        },
+        "aiEnvironmentManager.condaShPathMac": {
+          "type": "string",
+          "default": "~/miniconda3/etc/profile.d/conda.sh",
+          "markdownDescription": "Path to conda.sh in macOS.",
+          "scope": "resource"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.120.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "typescript-eslint": "^8.56.1",
+    "eslint": "^9.39.3",
+    "typescript": "^5.9.3",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}
