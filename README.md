@@ -1,19 +1,47 @@
 # AI Environment Manager
 
-Configure the Python environment that AI agents should use for a workspace. The extension helps you pick the right platform (Windows, WSL/Linux, or macOS) and environment type (Conda or venv/virtualenv), then prepares terminals and verifies that the expected interpreter is active.
+Keep AI tools and terminals aligned with the exact Python environment used by your project. Select your platform (Windows, WSL/Linux, or macOS), choose Conda or venv/virtualenv, and let the extension handle the rest.
 
-## Objective
+## Why this extension
 
-Ensure AI agents execute commands in the same environment your project actually uses, especially when your workspace runs on Windows but the runtime lives in WSL/Linux or macOS. This prevents mismatched interpreters, missing dependencies, and inconsistent results.
+AI assistants and terminals often run in the wrong Python environment, leading to missing dependencies, incorrect interpreters, and inconsistent results.
+
+This extension makes the active environment explicit, reproducible, and easy to switch across platforms.
+
+## Quick start
+
+1. Open a workspace folder.
+2. Run **AI Environment Manager: Configure Environment**.
+3. Select platform and environment type.
+4. Pick a Conda env or enter a venv path.
+
+You will see the active environment in the status bar and can open prepared terminals from there.
 
 ## Features
 
-- First-run setup flow with platform and environment selection.
-- Conda environment discovery for Windows, WSL/Linux, and macOS.
-- venv/virtualenv support via a workspace-relative folder (for example `.venv`).
-- Status bar indicator showing platform and active environment.
-- Prepared terminal launcher and a command to set it as the default terminal.
-- Environment verification output in an Output Channel.
+- Guided first-run setup for platform and environment configuration.
+- Automatic Conda environment discovery (Windows, WSL/Linux, macOS).
+- Support for venv / virtualenv via workspace-relative paths (e.g. .venv).
+- Status bar indicator showing active platform and environment.
+- Prepared terminal launcher with optional default terminal integration.
+- Environment verification via VS Code Output Channel.
+- Export requirements.txt for Conda and venv environments.
+- Export environment.yml for Conda environments.
+
+## Status bar menu
+
+Click the status bar item to open the action menu, which includes setup, environment verification, terminal actions, and export utilities.
+
+When using venv, the Export environment.yml option is automatically hidden.
+
+## Export your environment
+
+The extension can generate environment files in the workspace root:
+
+- **requirements.txt**: available for Conda and venv/virtualenv. Runs `python -m pip freeze` in the configured environment.
+- **environment.yml**: available only for Conda. Runs `conda env export --no-builds`.
+
+If the file already exists, you will be asked to confirm overwriting it.
 
 ## Commands
 
@@ -25,6 +53,8 @@ Ensure AI agents execute commands in the same environment your project actually 
 - AI Environment Manager: Open Prepared Terminal
 - AI Environment Manager: Refresh Environments
 - AI Environment Manager: Use Prepared Terminal for Commands
+- AI Environment Manager: Export requirements.txt
+- AI Environment Manager: Export environment.yml
 
 ## Settings
 
@@ -59,6 +89,6 @@ Example:
 
 ## Release Notes
 
-### 0.0.1
+### 0.0.1, 0.0.2, 0.0.3, 0.0.4
 
 - Initial release.

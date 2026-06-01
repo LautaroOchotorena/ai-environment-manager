@@ -1,13 +1,29 @@
 {
   "name": "ai-environment-manager",
   "displayName": "AI Environment Manager",
-  "description": "A VS Code extension that lets developers configure and manage the correct execution environment for AI coding agents on a per-workspace basis. Easily select whether a project uses a Conda environment in Windows or WSL, prepare terminals automatically, verify environment readiness, and ensure tools like GitHub Copilot, ChatGPT, Cline, Roo Code, and Continue operate with the intended Python interpreter and dependencies.",
-  "version": "0.0.1",
+  "icon": "icon.png",
+  "description": "Ensure AI chat terminals use the correct Conda or venv per workspace, with quick setup, verification, and export tools for Windows, WSL/Linux, and macOS.",
+  "version": "0.0.4",
   "engines": {
     "vscode": "^1.120.0"
   },
   "categories": [
     "Other"
+  ],
+  "keywords": [
+    "conda",
+    "venv",
+    "virtualenv",
+    "environment",
+    "interpreter",
+    "terminal",
+    "workspace",
+    "ai",
+    "copilot",
+    "wsl",
+    "linux",
+    "windows",
+    "macos"
   ],
   "activationEvents": [
     "onStartupFinished",
@@ -18,7 +34,9 @@
     "onCommand:aiEnvironmentManager.openPreparedTerminal",
     "onCommand:aiEnvironmentManager.refreshEnvironments",
     "onCommand:aiEnvironmentManager.setPreparedTerminalAsDefault",
-    "onCommand:aiEnvironmentManager.changePythonEnvironmentType"
+    "onCommand:aiEnvironmentManager.changePythonEnvironmentType",
+    "onCommand:aiEnvironmentManager.exportRequirements",
+    "onCommand:aiEnvironmentManager.exportEnvironmentYaml"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -54,6 +72,14 @@
       {
         "command": "aiEnvironmentManager.changePythonEnvironmentType",
         "title": "AI Environment Manager: Change Environment Type"
+      },
+      {
+        "command": "aiEnvironmentManager.exportRequirements",
+        "title": "AI Environment Manager: Export requirements.txt"
+      },
+      {
+        "command": "aiEnvironmentManager.exportEnvironmentYaml",
+        "title": "AI Environment Manager: Export environment.yml"
       }
     ],
     "configuration": {
@@ -120,5 +146,11 @@
     "typescript": "^5.9.3",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LautaroOchotorena/ai-environment-manager"
+  },
+  "publisher": "LautaroOchotorena",
+  "license": "MIT"
 }
