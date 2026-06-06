@@ -3,9 +3,9 @@
   "displayName": "AI Environment Manager",
   "icon": "icon.png",
   "description": "Ensure AI chat terminals use the correct Conda or venv per workspace, with quick setup, verification, and export tools for Windows, WSL/Linux, and macOS.",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "engines": {
-    "vscode": "^1.120.0"
+    "vscode": "^1.55.0"
   },
   "categories": [
     "Other"
@@ -138,7 +138,7 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.120.0",
+    "@types/vscode": "^1.55.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
     "typescript-eslint": "^8.56.1",

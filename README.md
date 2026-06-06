@@ -89,10 +89,17 @@ Example:
 
 ## Release Notes
 
-### 0.0.1, 0.0.2, 0.0.3, 0.0.4
+For the full history, see `CHANGELOG.md`.
+
+### 0.0.1
 
 - Initial release.
 
 ### 0.0.5
 
 - Fix environment export on Windows
+
+### 0.0.6 - Compatibility Update
+
+- Improved compatibility with VS Code forks such as Cursor, Windsurf (now Devin), and VSCodium.
+- Lowered the minimum required VS Code engine version.
