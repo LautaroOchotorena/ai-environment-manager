@@ -24,6 +24,7 @@ You will see the active environment in the status bar and can open prepared term
 - Support for venv / virtualenv via workspace-relative paths (e.g. .venv).
 - Status bar indicator showing active platform and environment.
 - Prepared terminal launcher with optional default terminal integration.
+- Automatic Cursor rule generation (`.cursor/rules/ai-environment-manager.mdc`) **when running in Cursor**, so Cursor's AI agent activates the correct environment before running commands.
 - Environment verification via VS Code Output Channel.
 - Export requirements.txt for Conda and venv environments.
 - Export environment.yml for Conda environments.
@@ -66,7 +67,6 @@ This extension contributes the following settings:
 - `aiEnvironmentManager.venvPath`: Workspace-relative venv folder (for example `.venv`)
 - `aiEnvironmentManager.condaShPathWslLinux`: Path to `conda.sh` in WSL/Linux
 - `aiEnvironmentManager.condaShPathMac`: Path to `conda.sh` in macOS
-
 Example:
 
 ```json
@@ -85,21 +85,23 @@ Example:
 
 ## Known Issues
 
-- Copilot and other agents may use their own terminal selection. Use **AI Environment Manager: Use Prepared Terminal for Commands** to set the default terminal profile in the current workspace.
+- Cursor's AI agent runs commands in a fresh shell that ignores VS Code terminal profiles. If you are using **Cursor**, run **Use Prepared Terminal for Commands** to generate a Cursor rule that forces the agent to activate your environment, and set the default terminal profile (for VS Code/Copilot).
 
 ## Release Notes
 
 For the full history, see `CHANGELOG.md`.
 
-### 0.0.1
+### 0.0.7 - Cursor Agent Fix
 
-- Initial release.
-
-### 0.0.5
-
-- Fix environment export on Windows
+- "Use Prepared Terminal for Commands" now generates a Cursor rule so the AI agent activates the correct environment.
+- WSL-aware rules: wraps all commands with `wsl.exe` when running from Windows.
+- Fixed the command aborting early in Cursor due to a configuration write error.
 
 ### 0.0.6 - Compatibility Update
 
 - Improved compatibility with VS Code forks such as Cursor, Windsurf (now Devin), and VSCodium.
 - Lowered the minimum required VS Code engine version.
+- 
+### 0.0.5
+
+- Fix environment export on Windows
