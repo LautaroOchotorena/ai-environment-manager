@@ -4,6 +4,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.0.8] - 2026-06-14
+### Added
+- `promptOnMissingEnvironment` workspace setting (default: `true`) to control whether the configuration panel opens automatically when no environment is selected.
+- "Don't Show Again" action when dismissing the automatic setup prompt, which disables auto-prompt for that workspace.
+
 ## [0.0.7] - 2026-06-07
 ### Added
 - "Use Prepared Terminal for Commands" now generates a Cursor rule (`.cursor/rules/ai-environment-manager.mdc`) that instructs the AI agent to activate the correct environment before running any terminal command. This fixes compatibility with Cursor, whose agent runs commands in a fresh shell ignoring terminal profiles.

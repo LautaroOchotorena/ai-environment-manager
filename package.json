@@ -3,7 +3,7 @@
   "displayName": "AI Environment Manager",
   "icon": "icon.png",
   "description": "Ensure AI chat terminals use the correct Conda or venv per workspace, with quick setup, verification, and export tools for Windows, WSL/Linux, and macOS.",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "engines": {
     "vscode": "^1.55.0"
   },
@@ -124,6 +124,12 @@
           "type": "string",
           "default": "~/miniconda3/etc/profile.d/conda.sh",
           "markdownDescription": "Path to conda.sh in macOS.",
+          "scope": "resource"
+        },
+        "aiEnvironmentManager.promptOnMissingEnvironment": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "When enabled, opens the configuration panel automatically if the workspace has no environment selected.",
           "scope": "resource"
         }
       }

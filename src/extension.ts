@@ -26,26 +26,31 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(statusBar);
 
-	const configureEnvironment = async () => {
+	const configureEnvironment = async (): Promise<boolean> => {
 		if (!settingsService.hasWorkspace()) {
 			vscode.window.showWarningMessage('AI Environment Manager needs an open workspace to store settings.');
-			return;
+			return false;
 		}
 
 		const platform = await showPlatformQuickPick();
 		if (!platform) {
-			return;
+			return false;
 		}
 
 		await settingsService.updatePlatform(platform);
 		const envType = await showPythonEnvTypeQuickPick(settingsService.getPythonEnvType());
 		if (!envType) {
-			return;
+			return false;
 		}
 
 		await settingsService.updatePythonEnvType(envType);
-		await configureEnvironmentDetails(envType, platform);
+		const configured = await configureEnvironmentDetails(envType, platform);
+		if (!configured) {
+			return false;
+		}
+
 		vscode.window.showInformationMessage(`AI Environment Manager configured for ${platform}.`);
+		return true;
 	};
 
 	const changePlatform = async () => {
@@ -208,37 +213,45 @@ export function activate(context: vscode.ExtensionContext) {
 	statusBar.update();
 	void maybeRunFirstRun(settingsService, configureEnvironment);
 
-	async function configureEnvironmentDetails(envType: PythonEnvType, platform: Platform) {
+	async function configureEnvironmentDetails(envType: PythonEnvType, platform: Platform): Promise<boolean> {
 		if (envType === 'venv') {
 			const venvPath = await showVenvPathInput(settingsService.getVenvPath());
 			if (!venvPath) {
-				return;
+				return false;
 			}
 
 			await settingsService.updateVenvPath(venvPath);
-			return;
+			return true;
 		}
 
 		const envs = await getCondaEnvironments(platform, condaService, settingsService);
 		if (envs.length === 0) {
 			vscode.window.showWarningMessage('No Conda environments were found.');
-			return;
+			return false;
 		}
 
 		const selectedEnv = await showCondaEnvironmentQuickPick(envs, settingsService.getCondaEnv());
 		if (!selectedEnv) {
-			return;
+			return false;
 		}
 
 		await settingsService.updateCondaEnv(selectedEnv);
+		return true;
 	}
 }
 
 // This method is called when your extension is deactivated
 export function deactivate() {}
 
-async function maybeRunFirstRun(settingsService: SettingsService, configureEnvironment: () => Promise<void>) {
+async function maybeRunFirstRun(
+	settingsService: SettingsService,
+	configureEnvironment: () => Promise<boolean>
+) {
 	if (!settingsService.hasWorkspace()) {
+		return;
+	}
+
+	if (!settingsService.getPromptOnMissingEnvironment()) {
 		return;
 	}
 
@@ -251,7 +264,21 @@ async function maybeRunFirstRun(settingsService: SettingsService, configureEnvir
 		return;
 	}
 
-	await configureEnvironment();
+	const configured = await configureEnvironment();
+	if (configured) {
+		return;
+	}
+
+	const action = await vscode.window.showInformationMessage(
+		'AI Environment Manager: no environment configured for this workspace.',
+		'Configure Now',
+		"Don't Show Again"
+	);
+	if (action === "Don't Show Again") {
+		await settingsService.updatePromptOnMissingEnvironment(false);
+	} else if (action === 'Configure Now') {
+		await configureEnvironment();
+	}
 }
 
 async function getCondaEnvironments(

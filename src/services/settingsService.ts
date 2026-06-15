@@ -30,6 +30,10 @@ export class SettingsService {
 		return this.getConfiguration().get<string>('condaShPathMac') ?? '~/miniconda3/etc/profile.d/conda.sh';
 	}
 
+	public getPromptOnMissingEnvironment(): boolean {
+		return this.getConfiguration().get<boolean>('promptOnMissingEnvironment') ?? true;
+	}
+
 	public async updatePlatform(platform?: Platform): Promise<void> {
 		await this.getConfiguration().update('platform', platform, vscode.ConfigurationTarget.Workspace);
 	}
@@ -44,6 +48,14 @@ export class SettingsService {
 
 	public async updateVenvPath(venvPath?: string): Promise<void> {
 		await this.getConfiguration().update('venvPath', venvPath, vscode.ConfigurationTarget.Workspace);
+	}
+
+	public async updatePromptOnMissingEnvironment(promptOnMissingEnvironment: boolean): Promise<void> {
+		await this.getConfiguration().update(
+			'promptOnMissingEnvironment',
+			promptOnMissingEnvironment,
+			vscode.ConfigurationTarget.Workspace
+		);
 	}
 
 	public onDidChangeConfiguration(callback: () => void): vscode.Disposable {

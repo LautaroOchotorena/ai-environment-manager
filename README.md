@@ -19,7 +19,7 @@ You will see the active environment in the status bar and can open prepared term
 
 ## Features
 
-- Guided first-run setup for platform and environment configuration.
+- Guided first-run setup for platform and environment configuration (optional; can be disabled per workspace).
 - Automatic Conda environment discovery (Windows, WSL/Linux, macOS).
 - Support for venv / virtualenv via workspace-relative paths (e.g. .venv).
 - Status bar indicator showing active platform and environment.
@@ -34,6 +34,15 @@ You will see the active environment in the status bar and can open prepared term
 Click the status bar item to open the action menu, which includes setup, environment verification, terminal actions, and export utilities.
 
 When using venv, the Export environment.yml option is automatically hidden.
+
+## Automatic setup prompt
+
+When a workspace has no platform or Python environment configured, the extension opens the setup panel on startup. To disable this for a project, either:
+
+- Choose **Don't Show Again** when you dismiss the automatic prompt, or
+- Set `aiEnvironmentManager.promptOnMissingEnvironment` to `false` in workspace settings.
+
+You can still configure the environment anytime from the status bar (**⚠ Configure Environment**) or via **AI Environment Manager: Configure Environment**.
 
 ## Export your environment
 
@@ -67,6 +76,7 @@ This extension contributes the following settings:
 - `aiEnvironmentManager.venvPath`: Workspace-relative venv folder (for example `.venv`)
 - `aiEnvironmentManager.condaShPathWslLinux`: Path to `conda.sh` in WSL/Linux
 - `aiEnvironmentManager.condaShPathMac`: Path to `conda.sh` in macOS
+- `aiEnvironmentManager.promptOnMissingEnvironment`: Open the configuration panel automatically when no environment is selected (default: `true`)
 Example:
 
 ```json
@@ -90,6 +100,11 @@ Example:
 ## Release Notes
 
 For the full history, see `CHANGELOG.md`.
+
+### 0.0.8 - Optional Setup Prompt
+
+- Added `promptOnMissingEnvironment` setting to disable the automatic configuration panel on project open.
+- Dismissing the setup prompt offers a "Don't Show Again" option for the current workspace.
 
 ### 0.0.7 - Cursor Agent Fix
 
