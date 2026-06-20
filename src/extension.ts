@@ -28,7 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const configureEnvironment = async (): Promise<boolean> => {
 		if (!settingsService.hasWorkspace()) {
-			vscode.window.showWarningMessage('AI Environment Manager needs an open workspace to store settings.');
+			vscode.window.showWarningMessage(vscode.l10n.t('AI Environment Manager needs an open workspace to store settings.'));
 			return false;
 		}
 
@@ -49,7 +49,7 @@ export function activate(context: vscode.ExtensionContext) {
 			return false;
 		}
 
-		vscode.window.showInformationMessage(`AI Environment Manager configured for ${platform}.`);
+		vscode.window.showInformationMessage(vscode.l10n.t('AI Environment Manager configured for {0}.', platform));
 		return true;
 	};
 
@@ -62,13 +62,13 @@ export function activate(context: vscode.ExtensionContext) {
 		await settingsService.updatePlatform(platform);
 		const envType = settingsService.getPythonEnvType() ?? 'conda';
 		await configureEnvironmentDetails(envType, platform);
-		vscode.window.showInformationMessage(`Platform updated to ${platform}.`);
+		vscode.window.showInformationMessage(vscode.l10n.t('Platform updated to {0}.', platform));
 	};
 
 	const changeCondaEnvironment = async () => {
 		const platform = settingsService.getPlatform();
 		if (!platform) {
-			vscode.window.showWarningMessage('Select a platform before choosing a Conda environment.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Select a platform before choosing a Conda environment.'));
 			await changePlatform();
 			return;
 		}
@@ -77,7 +77,7 @@ export function activate(context: vscode.ExtensionContext) {
 		if (envType === 'conda') {
 			const envs = await getCondaEnvironments(platform, condaService, settingsService);
 			if (envs.length === 0) {
-				vscode.window.showWarningMessage('No Conda environments were found.');
+				vscode.window.showWarningMessage(vscode.l10n.t('No Conda environments were found.'));
 				return;
 			}
 
@@ -87,7 +87,7 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 
 			await settingsService.updateCondaEnv(selectedEnv);
-			vscode.window.showInformationMessage(`Conda environment set to ${selectedEnv}.`);
+			vscode.window.showInformationMessage(vscode.l10n.t('Conda environment set to {0}.', selectedEnv));
 			return;
 		}
 
@@ -97,13 +97,13 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		await settingsService.updateVenvPath(venvPath);
-		vscode.window.showInformationMessage(`Venv path set to ${venvPath}.`);
+		vscode.window.showInformationMessage(vscode.l10n.t('Venv path set to {0}.', venvPath));
 	};
 
 	const changePythonEnvironmentType = async () => {
 		const platform = settingsService.getPlatform();
 		if (!platform) {
-			vscode.window.showWarningMessage('Select a platform before choosing an environment type.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Select a platform before choosing an environment type.'));
 			await changePlatform();
 			return;
 		}
@@ -115,7 +115,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 		await settingsService.updatePythonEnvType(envType);
 		await configureEnvironmentDetails(envType, platform);
-		vscode.window.showInformationMessage(`Environment type set to ${envType}.`);
+		vscode.window.showInformationMessage(vscode.l10n.t('Environment type set to {0}.', envType));
 	};
 
 	const verifyEnvironment = async () => {
@@ -142,7 +142,7 @@ export function activate(context: vscode.ExtensionContext) {
 		const platform = settingsService.getPlatform();
 		const envType = settingsService.getPythonEnvType() ?? 'conda';
 		if (!platform) {
-			vscode.window.showWarningMessage('Select a platform before refreshing environments.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Select a platform before refreshing environments.'));
 			return;
 		}
 
@@ -153,13 +153,13 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 
 			await settingsService.updateVenvPath(venvPath);
-			vscode.window.showInformationMessage('Venv path refreshed.');
+			vscode.window.showInformationMessage(vscode.l10n.t('Venv path refreshed.'));
 			return;
 		}
 
 		const envs = await getCondaEnvironments(platform, condaService, settingsService);
 		if (envs.length === 0) {
-			vscode.window.showWarningMessage('No Conda environments were found.');
+			vscode.window.showWarningMessage(vscode.l10n.t('No Conda environments were found.'));
 			return;
 		}
 
@@ -169,7 +169,7 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 		await settingsService.updateCondaEnv(selectedEnv);
-		vscode.window.showInformationMessage('Conda environments refreshed.');
+		vscode.window.showInformationMessage(vscode.l10n.t('Conda environments refreshed.'));
 	};
 
 	const showStatusMenu = async () => {
@@ -226,7 +226,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 		const envs = await getCondaEnvironments(platform, condaService, settingsService);
 		if (envs.length === 0) {
-			vscode.window.showWarningMessage('No Conda environments were found.');
+			vscode.window.showWarningMessage(vscode.l10n.t('No Conda environments were found.'));
 			return false;
 		}
 
@@ -269,14 +269,16 @@ async function maybeRunFirstRun(
 		return;
 	}
 
+	const configureNow = vscode.l10n.t('Configure Now');
+	const dontShowAgain = vscode.l10n.t("Don't Show Again");
 	const action = await vscode.window.showInformationMessage(
-		'AI Environment Manager: no environment configured for this workspace.',
-		'Configure Now',
-		"Don't Show Again"
+		vscode.l10n.t('AI Environment Manager: no environment configured for this workspace.'),
+		configureNow,
+		dontShowAgain
 	);
-	if (action === "Don't Show Again") {
+	if (action === dontShowAgain) {
 		await settingsService.updatePromptOnMissingEnvironment(false);
-	} else if (action === 'Configure Now') {
+	} else if (action === configureNow) {
 		await configureEnvironment();
 	}
 }
@@ -302,7 +304,7 @@ async function getCondaEnvironments(
 
 		return await condaService.getWslLinuxCondaEnvs(condaShPath, isWindowsHost);
 	} catch (error) {
-		const message = error instanceof Error ? error.message : 'Failed to list Conda environments.';
+		const message = error instanceof Error ? error.message : vscode.l10n.t('Failed to list Conda environments.');
 		vscode.window.showErrorMessage(message);
 		return [];
 	}

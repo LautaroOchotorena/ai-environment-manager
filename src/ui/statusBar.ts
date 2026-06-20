@@ -18,15 +18,15 @@ export class StatusBarController implements vscode.Disposable {
 
 		const hasEnv = envType === 'venv' ? Boolean(venvPath) : Boolean(condaEnv);
 		if (!platform || !envType || !hasEnv) {
-			this.statusBarItem.text = '⚠ Configure Environment';
-			this.statusBarItem.tooltip = 'Set the platform and Python environment.';
+			this.statusBarItem.text = vscode.l10n.t('⚠ Configure Environment');
+			this.statusBarItem.tooltip = vscode.l10n.t('Set the platform and Python environment.');
 			return;
 		}
 
 		const icon = platform === 'wsl' ? '🐧' : platform === 'macos' ? '🍎' : '🪟';
 		const label = envType === 'venv' ? `venv:${venvPath}` : `conda:${condaEnv}`;
 		this.statusBarItem.text = `${icon} ${label}`;
-		this.statusBarItem.tooltip = `AI Environment Manager (${platform})`;
+		this.statusBarItem.tooltip = vscode.l10n.t('AI Environment Manager ({0})', platform);
 	}
 
 	public dispose(): void {

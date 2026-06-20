@@ -101,6 +101,11 @@ Example:
 
 For the full history, see `CHANGELOG.md`.
 
+### 0.1.0 - English and Spanish Localization
+
+- UI, commands, settings descriptions, and notifications are available in English and Spanish based on the editor display language.
+- Fixed menus showing internal localization keys instead of readable text.
+
 ### 0.0.8 - Optional Setup Prompt
 
 - Added `promptOnMissingEnvironment` setting to disable the automatic configuration panel on project open.

@@ -1,3 +1,4 @@
+import * as vscode from 'vscode';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 
@@ -9,7 +10,7 @@ export class CondaService {
 			const output = await this.runCommand('conda env list');
 			return this.parseCondaEnvList(output);
 		} catch (error) {
-			throw this.formatError(error, 'Conda was not found on Windows. Ensure Conda is installed and on PATH.');
+			throw this.formatError(error, vscode.l10n.t('Conda was not found on Windows. Ensure Conda is installed and on PATH.'));
 		}
 	}
 
@@ -19,8 +20,8 @@ export class CondaService {
 			return this.parseCondaEnvList(output);
 		} catch (error) {
 			const message = useWsl && this.isWslMissing(error)
-				? 'WSL is not available. Install WSL and try again.'
-				: 'Conda was not found in WSL/Linux. Ensure Conda is installed and on PATH.';
+				? vscode.l10n.t('WSL is not available. Install WSL and try again.')
+				: vscode.l10n.t('Conda was not found in WSL/Linux. Ensure Conda is installed and on PATH.');
 			throw this.formatError(error, message);
 		}
 	}
@@ -30,7 +31,7 @@ export class CondaService {
 			const output = await this.runCommand(this.buildUnixCommand(condaShPath, 'conda env list', false));
 			return this.parseCondaEnvList(output);
 		} catch (error) {
-			throw this.formatError(error, 'Conda was not found on macOS. Ensure Conda is installed and on PATH.');
+			throw this.formatError(error, vscode.l10n.t('Conda was not found on macOS. Ensure Conda is installed and on PATH.'));
 		}
 	}
 

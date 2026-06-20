@@ -1,0 +1,22 @@
+{
+	"extension.displayName": "AI Environment Manager",
+	"extension.description": "Asegura que las terminales de chat con IA usen el Conda o venv correcto por workspace, con configuración rápida, verificación y exportación para Windows, WSL/Linux y macOS.",
+	"command.configureEnvironment.title": "AI Environment Manager: Configurar entorno",
+	"command.changePlatform.title": "AI Environment Manager: Cambiar plataforma",
+	"command.changeCondaEnvironment.title": "AI Environment Manager: Cambiar entorno Conda",
+	"command.verifyEnvironment.title": "AI Environment Manager: Verificar entorno",
+	"command.openPreparedTerminal.title": "AI Environment Manager: Abrir terminal preparada",
+	"command.refreshEnvironments.title": "AI Environment Manager: Actualizar entornos",
+	"command.setPreparedTerminalAsDefault.title": "AI Environment Manager: Usar terminal preparada para comandos",
+	"command.changePythonEnvironmentType.title": "AI Environment Manager: Cambiar tipo de entorno",
+	"command.exportRequirements.title": "AI Environment Manager: Exportar requirements.txt",
+	"command.exportEnvironmentYaml.title": "AI Environment Manager: Exportar environment.yml",
+	"configuration.title": "AI Environment Manager",
+	"configuration.platform.description": "Plataforma donde se ejecuta el entorno. Usa wsl para WSL/Linux.",
+	"configuration.pythonEnvType.description": "Tipo de entorno Python a utilizar.",
+	"configuration.condaEnv.description": "Nombre del entorno Conda a utilizar.",
+	"configuration.venvPath.description": "Ruta relativa a la carpeta venv/virtualenv (por ejemplo: .venv).",
+	"configuration.condaShPathWslLinux.description": "Ruta a conda.sh en WSL/Linux.",
+	"configuration.condaShPathMac.description": "Ruta a conda.sh en macOS.",
+	"configuration.promptOnMissingEnvironment.description": "Si está activado, abre el panel de configuración automáticamente cuando el workspace no tiene un entorno seleccionado."
+}

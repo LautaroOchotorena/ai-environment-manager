@@ -7,7 +7,7 @@ import { Platform, PythonEnvType } from '../types/configuration';
 const execAsync = promisify(exec);
 
 export class VerificationService {
-	private readonly outputChannel = vscode.window.createOutputChannel('AI Environment Manager');
+	private readonly outputChannel = vscode.window.createOutputChannel(vscode.l10n.t('AI Environment Manager'));
 
 	constructor(private readonly settingsService: SettingsService) {}
 
@@ -18,22 +18,23 @@ export class VerificationService {
 		const venvPath = this.settingsService.getVenvPath();
 
 		if (!platform) {
-			vscode.window.showWarningMessage('Configure the platform and environment before verifying.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Configure the platform and environment before verifying.'));
 			return;
 		}
 
 		if (envType === 'venv' && !venvPath) {
-			vscode.window.showWarningMessage('Configure the venv/virtualenv path before verifying.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Configure the venv/virtualenv path before verifying.'));
 			return;
 		}
 
 		if (envType === 'conda' && !condaEnv) {
-			vscode.window.showWarningMessage('Configure the Conda environment before verifying.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Configure the Conda environment before verifying.'));
 			return;
 		}
 
+		const envLabel = envType === 'venv' ? (venvPath ?? '') : (condaEnv ?? '');
 		this.outputChannel.clear();
-		this.outputChannel.appendLine(`Verifying environment for ${platform} (${condaEnv})...`);
+		this.outputChannel.appendLine(vscode.l10n.t('Verifying environment for {0} ({1})...', platform, envLabel));
 		this.outputChannel.appendLine('');
 
 		const commands = this.getVerificationCommands(platform, envType, venvPath);
@@ -48,17 +49,17 @@ export class VerificationService {
 				}
 			} catch (error) {
 				success = false;
-				const message = error instanceof Error ? error.message : 'Command failed.';
-				this.outputChannel.appendLine(`Error: ${message}`);
+				const message = error instanceof Error ? error.message : vscode.l10n.t('Command failed.');
+				this.outputChannel.appendLine(vscode.l10n.t('Error: {0}', message));
 			}
 			this.outputChannel.appendLine('');
 		}
 
 		this.outputChannel.show(true);
 		if (success) {
-			vscode.window.showInformationMessage('Environment verification succeeded.');
+			vscode.window.showInformationMessage(vscode.l10n.t('Environment verification succeeded.'));
 		} else {
-			vscode.window.showErrorMessage('Environment verification failed. Review the output for details.');
+			vscode.window.showErrorMessage(vscode.l10n.t('Environment verification failed. Review the output for details.'));
 		}
 	}
 
@@ -80,12 +81,12 @@ export class VerificationService {
 			return [result.stdout, result.stderr].filter(Boolean).join('\n');
 		} catch (error) {
 			if (this.isWslMissing(error)) {
-				throw new Error('WSL is not available. Install WSL and try again.');
+				throw new Error(vscode.l10n.t('WSL is not available. Install WSL and try again.'));
 			}
 			if (this.isCondaMissing(error)) {
-				throw new Error('Conda was not found. Ensure Conda is installed and on PATH.');
+				throw new Error(vscode.l10n.t('Conda was not found. Ensure Conda is installed and on PATH.'));
 			}
-			throw error instanceof Error ? error : new Error('Command failed.');
+			throw error instanceof Error ? error : new Error(vscode.l10n.t('Command failed.'));
 		}
 	}
 

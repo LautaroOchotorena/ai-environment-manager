@@ -4,6 +4,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-06-18
+### Added
+- English and Spanish localization for commands, settings, messages, menus, and status bar (`package.nls` + `vscode.l10n` bundles).
+
+### Fixed
+- Runtime strings now use English text in `vscode.l10n.t()` calls so menus and notifications display correctly in the default language (fixes literal keys such as `menu.changePlatform` showing in Cursor/VS Code).
+
 ## [0.0.8] - 2026-06-14
 ### Added
 - `promptOnMissingEnvironment` workspace setting (default: `true`) to control whether the configuration panel opens automatically when no environment is selected.

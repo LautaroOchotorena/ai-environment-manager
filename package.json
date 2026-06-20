@@ -1,11 +1,12 @@
 {
   "name": "ai-environment-manager",
-  "displayName": "AI Environment Manager",
+  "displayName": "%extension.displayName%",
   "icon": "icon.png",
-  "description": "Ensure AI chat terminals use the correct Conda or venv per workspace, with quick setup, verification, and export tools for Windows, WSL/Linux, and macOS.",
-  "version": "0.0.8",
+  "description": "%extension.description%",
+  "version": "0.1.0",
+  "l10n": "./l10n",
   "engines": {
-    "vscode": "^1.55.0"
+    "vscode": "^1.74.0"
   },
   "categories": [
     "Other"
@@ -43,47 +44,47 @@
     "commands": [
       {
         "command": "aiEnvironmentManager.configureEnvironment",
-        "title": "AI Environment Manager: Configure Environment"
+        "title": "%command.configureEnvironment.title%"
       },
       {
         "command": "aiEnvironmentManager.changePlatform",
-        "title": "AI Environment Manager: Change Platform"
+        "title": "%command.changePlatform.title%"
       },
       {
         "command": "aiEnvironmentManager.changeCondaEnvironment",
-        "title": "AI Environment Manager: Change Conda Environment"
+        "title": "%command.changeCondaEnvironment.title%"
       },
       {
         "command": "aiEnvironmentManager.verifyEnvironment",
-        "title": "AI Environment Manager: Verify Environment"
+        "title": "%command.verifyEnvironment.title%"
       },
       {
         "command": "aiEnvironmentManager.openPreparedTerminal",
-        "title": "AI Environment Manager: Open Prepared Terminal"
+        "title": "%command.openPreparedTerminal.title%"
       },
       {
         "command": "aiEnvironmentManager.refreshEnvironments",
-        "title": "AI Environment Manager: Refresh Environments"
+        "title": "%command.refreshEnvironments.title%"
       },
       {
         "command": "aiEnvironmentManager.setPreparedTerminalAsDefault",
-        "title": "AI Environment Manager: Use Prepared Terminal for Commands"
+        "title": "%command.setPreparedTerminalAsDefault.title%"
       },
       {
         "command": "aiEnvironmentManager.changePythonEnvironmentType",
-        "title": "AI Environment Manager: Change Environment Type"
+        "title": "%command.changePythonEnvironmentType.title%"
       },
       {
         "command": "aiEnvironmentManager.exportRequirements",
-        "title": "AI Environment Manager: Export requirements.txt"
+        "title": "%command.exportRequirements.title%"
       },
       {
         "command": "aiEnvironmentManager.exportEnvironmentYaml",
-        "title": "AI Environment Manager: Export environment.yml"
+        "title": "%command.exportEnvironmentYaml.title%"
       }
     ],
     "configuration": {
-      "title": "AI Environment Manager",
+      "title": "%configuration.title%",
       "properties": {
         "aiEnvironmentManager.platform": {
           "type": "string",
@@ -92,7 +93,7 @@
             "wsl",
             "macos"
           ],
-          "markdownDescription": "Platform where the environment runs. Use wsl for WSL/Linux.",
+          "markdownDescription": "%configuration.platform.description%",
           "scope": "resource"
         },
         "aiEnvironmentManager.pythonEnvType": {
@@ -101,35 +102,35 @@
             "conda",
             "venv"
           ],
-          "markdownDescription": "Python environment type to use.",
+          "markdownDescription": "%configuration.pythonEnvType.description%",
           "scope": "resource"
         },
         "aiEnvironmentManager.condaEnv": {
           "type": "string",
-          "markdownDescription": "Name of the Conda environment to use.",
+          "markdownDescription": "%configuration.condaEnv.description%",
           "scope": "resource"
         },
         "aiEnvironmentManager.venvPath": {
           "type": "string",
-          "markdownDescription": "Relative path to the venv/virtualenv folder (for example: .venv).",
+          "markdownDescription": "%configuration.venvPath.description%",
           "scope": "resource"
         },
         "aiEnvironmentManager.condaShPathWslLinux": {
           "type": "string",
           "default": "~/miniconda3/etc/profile.d/conda.sh",
-          "markdownDescription": "Path to conda.sh in WSL/Linux.",
+          "markdownDescription": "%configuration.condaShPathWslLinux.description%",
           "scope": "resource"
         },
         "aiEnvironmentManager.condaShPathMac": {
           "type": "string",
           "default": "~/miniconda3/etc/profile.d/conda.sh",
-          "markdownDescription": "Path to conda.sh in macOS.",
+          "markdownDescription": "%configuration.condaShPathMac.description%",
           "scope": "resource"
         },
         "aiEnvironmentManager.promptOnMissingEnvironment": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "When enabled, opens the configuration panel automatically if the workspace has no environment selected.",
+          "markdownDescription": "%configuration.promptOnMissingEnvironment.description%",
           "scope": "resource"
         }
       }
@@ -144,7 +145,7 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.55.0",
+    "@types/vscode": "^1.74.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
     "typescript-eslint": "^8.56.1",

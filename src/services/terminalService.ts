@@ -12,24 +12,24 @@ export class TerminalService {
 		const venvPath = this.settingsService.getVenvPath();
 
 		if (!platform) {
-			vscode.window.showWarningMessage('Configure the platform and environment first.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Configure the platform and environment first.'));
 			return;
 		}
 
 		if (envType === 'venv' && !venvPath) {
-			vscode.window.showWarningMessage('Configure the venv/virtualenv path first.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Configure the venv/virtualenv path first.'));
 			return;
 		}
 
 		if (envType === 'conda' && !condaEnv) {
-			vscode.window.showWarningMessage('Configure the Conda environment first.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Configure the Conda environment first.'));
 			return;
 		}
 
 		if (platform === 'wsl') {
 			const useWsl = process.platform === 'win32';
 			const terminal = vscode.window.createTerminal({
-				name: useWsl ? 'AI Env (WSL)' : 'AI Env (Linux)',
+				name: useWsl ? vscode.l10n.t('AI Env (WSL)') : vscode.l10n.t('AI Env (Linux)'),
 				shellPath: useWsl ? 'wsl.exe' : undefined,
 			});
 			if (envType === 'conda') {
@@ -43,7 +43,7 @@ export class TerminalService {
 		}
 
 		if (platform === 'macos') {
-			const terminal = vscode.window.createTerminal({ name: 'AI Env (macOS)' });
+			const terminal = vscode.window.createTerminal({ name: vscode.l10n.t('AI Env (macOS)') });
 			if (envType === 'conda') {
 				terminal.sendText(`source ${this.settingsService.getCondaShPathMac()}`);
 				terminal.sendText(`conda activate ${condaEnv}`);
@@ -54,7 +54,7 @@ export class TerminalService {
 			return;
 		}
 
-		const terminal = vscode.window.createTerminal({ name: 'AI Env (Windows)' });
+		const terminal = vscode.window.createTerminal({ name: vscode.l10n.t('AI Env (Windows)') });
 		if (envType === 'conda') {
 			terminal.sendText(`conda activate ${condaEnv}`);
 		} else {
@@ -71,29 +71,29 @@ export class TerminalService {
 		const workspaceUri = this.settingsService.getWorkspaceUri();
 
 		if (!workspaceUri) {
-			vscode.window.showWarningMessage('Open a workspace folder before changing the default terminal.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Open a workspace folder before changing the default terminal.'));
 			return;
 		}
 
 		if (!platform) {
-			vscode.window.showWarningMessage('Configure the platform and environment first.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Configure the platform and environment first.'));
 			return;
 		}
 
 		if (envType === 'venv' && !venvPath) {
-			vscode.window.showWarningMessage('Configure the venv/virtualenv path first.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Configure the venv/virtualenv path first.'));
 			return;
 		}
 
 		if (envType === 'conda' && !condaEnv) {
-			vscode.window.showWarningMessage('Configure the Conda environment first.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Configure the Conda environment first.'));
 			return;
 		}
 
 		const configuration = vscode.workspace.getConfiguration(undefined, workspaceUri);
 		const os = process.platform;
 		if (os === 'win32') {
-			const profileName = platform === 'wsl' ? 'AI Env (WSL)' : 'AI Env (Windows)';
+			const profileName = platform === 'wsl' ? vscode.l10n.t('AI Env (WSL)') : vscode.l10n.t('AI Env (Windows)');
 			const profile = platform === 'wsl'
 				? {
 					path: 'wsl.exe',
@@ -119,7 +119,7 @@ export class TerminalService {
 
 			await this.updateTerminalProfile(configuration, 'windows', profileName, profile);
 		} else {
-			const profileName = platform === 'macos' ? 'AI Env (macOS)' : 'AI Env (Linux)';
+			const profileName = platform === 'macos' ? vscode.l10n.t('AI Env (macOS)') : vscode.l10n.t('AI Env (Linux)');
 			const profile = {
 				path: 'bash',
 				args: [
@@ -136,9 +136,9 @@ export class TerminalService {
 
 		if (this.isRunningInCursor()) {
 			await this.generateCursorRule(workspaceUri, platform, envType, condaEnv, venvPath);
-			vscode.window.showInformationMessage('Default terminal configured and Cursor rule generated for this workspace.');
+			vscode.window.showInformationMessage(vscode.l10n.t('Default terminal configured and Cursor rule generated for this workspace.'));
 		} else {
-			vscode.window.showInformationMessage('Default terminal configured for this workspace.');
+			vscode.window.showInformationMessage(vscode.l10n.t('Default terminal configured for this workspace.'));
 		}
 	}
 
@@ -160,7 +160,7 @@ export class TerminalService {
 
 		const ruleContent = [
 			'---',
-			'description: Activate the correct Python environment before running terminal commands',
+			`description: ${vscode.l10n.t('Activate the correct Python environment before running terminal commands')}`,
 			'alwaysApply: true',
 			'---',
 			'',

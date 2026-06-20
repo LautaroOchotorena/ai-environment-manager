@@ -13,7 +13,7 @@ export class ExportService {
 	public async exportRequirements(): Promise<void> {
 		const workspaceUri = this.settingsService.getWorkspaceUri();
 		if (!workspaceUri) {
-			vscode.window.showWarningMessage('Open a workspace folder before exporting requirements.txt.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Open a workspace folder before exporting requirements.txt.'));
 			return;
 		}
 
@@ -23,17 +23,17 @@ export class ExportService {
 		const venvPath = this.settingsService.getVenvPath();
 
 		if (!platform) {
-			vscode.window.showWarningMessage('Configure the platform and environment before exporting.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Configure the platform and environment before exporting.'));
 			return;
 		}
 
 		if (envType === 'conda' && !condaEnv) {
-			vscode.window.showWarningMessage('Configure the Conda environment before exporting.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Configure the Conda environment before exporting.'));
 			return;
 		}
 
 		if (envType === 'venv' && !venvPath) {
-			vscode.window.showWarningMessage('Configure the venv/virtualenv path before exporting.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Configure the venv/virtualenv path before exporting.'));
 			return;
 		}
 
@@ -50,9 +50,9 @@ export class ExportService {
 
 			const output = await this.runCommand(command);
 			await this.writeFile(fileUri, output);
-			vscode.window.showInformationMessage('✓ requirements.txt exported successfully');
+			vscode.window.showInformationMessage(vscode.l10n.t('✓ requirements.txt exported successfully'));
 		} catch (error) {
-			const message = error instanceof Error ? error.message : 'Failed to export requirements.txt.';
+			const message = error instanceof Error ? error.message : vscode.l10n.t('Failed to export requirements.txt.');
 			vscode.window.showErrorMessage(message);
 		}
 	}
@@ -60,7 +60,7 @@ export class ExportService {
 	public async exportEnvironmentYaml(): Promise<void> {
 		const workspaceUri = this.settingsService.getWorkspaceUri();
 		if (!workspaceUri) {
-			vscode.window.showWarningMessage('Open a workspace folder before exporting environment.yml.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Open a workspace folder before exporting environment.yml.'));
 			return;
 		}
 
@@ -69,17 +69,17 @@ export class ExportService {
 		const condaEnv = this.settingsService.getCondaEnv();
 
 		if (!platform) {
-			vscode.window.showWarningMessage('Configure the platform and environment before exporting.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Configure the platform and environment before exporting.'));
 			return;
 		}
 
 		if (envType === 'venv') {
-			vscode.window.showInformationMessage('This feature is only available for Conda environments.');
+			vscode.window.showInformationMessage(vscode.l10n.t('This feature is only available for Conda environments.'));
 			return;
 		}
 
 		if (!condaEnv) {
-			vscode.window.showWarningMessage('Configure the Conda environment before exporting.');
+			vscode.window.showWarningMessage(vscode.l10n.t('Configure the Conda environment before exporting.'));
 			return;
 		}
 
@@ -94,9 +94,9 @@ export class ExportService {
 				: this.buildCondaCommand(platform, condaEnv, 'conda env export --no-builds');
 			const output = await this.runCommand(command);
 			await this.writeFile(fileUri, output);
-			vscode.window.showInformationMessage('✓ environment.yml exported successfully');
+			vscode.window.showInformationMessage(vscode.l10n.t('✓ environment.yml exported successfully'));
 		} catch (error) {
-			const message = error instanceof Error ? error.message : 'Failed to export environment.yml.';
+			const message = error instanceof Error ? error.message : vscode.l10n.t('Failed to export environment.yml.');
 			vscode.window.showErrorMessage(message);
 		}
 	}
@@ -170,7 +170,7 @@ export class ExportService {
 			await vscode.workspace.fs.stat(vscode.Uri.file(pythonPath));
 			return pythonPath;
 		} catch {
-			vscode.window.showErrorMessage('Python interpreter for the venv/virtualenv was not found.');
+			vscode.window.showErrorMessage(vscode.l10n.t('Python interpreter for the venv/virtualenv was not found.'));
 			return undefined;
 		}
 	}
@@ -178,12 +178,13 @@ export class ExportService {
 	private async confirmOverwrite(fileUri: vscode.Uri, fileName: string): Promise<boolean> {
 		try {
 			await vscode.workspace.fs.stat(fileUri);
+			const overwrite = vscode.l10n.t('Overwrite');
 			const choice = await vscode.window.showWarningMessage(
-				`"${fileName}" already exists. Overwrite?`,
+				vscode.l10n.t('"{0}" already exists. Overwrite?', fileName),
 				{ modal: true },
-				'Overwrite'
+				overwrite
 			);
-			return choice === 'Overwrite';
+			return choice === overwrite;
 		} catch {
 			return true;
 		}
@@ -209,12 +210,12 @@ export class ExportService {
 			return [result.stdout, result.stderr].filter(Boolean).join('\n');
 		} catch (error) {
 			if (this.isWslMissing(error)) {
-				throw new Error('WSL is not available. Install WSL and try again.');
+				throw new Error(vscode.l10n.t('WSL is not available. Install WSL and try again.'));
 			}
 			if (this.isCondaMissing(error)) {
-				throw new Error('Conda was not found. Ensure Conda is installed and on PATH.');
+				throw new Error(vscode.l10n.t('Conda was not found. Ensure Conda is installed and on PATH.'));
 			}
-			throw error instanceof Error ? error : new Error('Export command failed.');
+			throw error instanceof Error ? error : new Error(vscode.l10n.t('Export command failed.'));
 		}
 	}
 
