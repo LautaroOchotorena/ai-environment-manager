@@ -1,9 +1,13 @@
 import * as vscode from 'vscode';
+import { CodexService } from './codexService';
 import { SettingsService } from './settingsService';
 import { Platform } from '../types/configuration';
 
 export class TerminalService {
-	constructor(private readonly settingsService: SettingsService) {}
+	constructor(
+		private readonly settingsService: SettingsService,
+		private readonly codexService: CodexService
+	) {}
 
 	public async openPreparedTerminal(): Promise<void> {
 		const platform = this.settingsService.getPlatform();
@@ -134,12 +138,42 @@ export class TerminalService {
 			await this.updateTerminalProfile(configuration, profileOs, profileName, profile);
 		}
 
+		let cursorRuleGenerated = false;
 		if (this.isRunningInCursor()) {
 			await this.generateCursorRule(workspaceUri, platform, envType, condaEnv, venvPath);
-			vscode.window.showInformationMessage(vscode.l10n.t('Default terminal configured and Cursor rule generated for this workspace.'));
-		} else {
-			vscode.window.showInformationMessage(vscode.l10n.t('Default terminal configured for this workspace.'));
+			cursorRuleGenerated = true;
 		}
+
+		const codexArtifactsUpdated = this.codexService.canSync()
+			? await this.codexService.sync()
+			: false;
+
+		this.showSetDefaultCompletionMessage(cursorRuleGenerated, codexArtifactsUpdated);
+	}
+
+	private showSetDefaultCompletionMessage(cursorRuleGenerated: boolean, codexArtifactsUpdated: boolean): void {
+		if (cursorRuleGenerated && codexArtifactsUpdated) {
+			vscode.window.showInformationMessage(
+				vscode.l10n.t('Default terminal configured, Cursor rule generated, and Codex artifacts updated for this workspace.')
+			);
+			return;
+		}
+
+		if (cursorRuleGenerated) {
+			vscode.window.showInformationMessage(
+				vscode.l10n.t('Default terminal configured and Cursor rule generated for this workspace.')
+			);
+			return;
+		}
+
+		if (codexArtifactsUpdated) {
+			vscode.window.showInformationMessage(
+				vscode.l10n.t('Default terminal configured and Codex artifacts updated for this workspace.')
+			);
+			return;
+		}
+
+		vscode.window.showInformationMessage(vscode.l10n.t('Default terminal configured for this workspace.'));
 	}
 
 	private async generateCursorRule(

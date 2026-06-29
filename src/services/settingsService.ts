@@ -34,6 +34,10 @@ export class SettingsService {
 		return this.getConfiguration().get<boolean>('promptOnMissingEnvironment') ?? true;
 	}
 
+	public getGenerateCodexArtifacts(): boolean {
+		return this.getConfiguration().get<boolean>('generateCodexArtifacts') ?? true;
+	}
+
 	public async updatePlatform(platform?: Platform): Promise<void> {
 		await this.getConfiguration().update('platform', platform, vscode.ConfigurationTarget.Workspace);
 	}

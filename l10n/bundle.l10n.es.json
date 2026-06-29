@@ -61,6 +61,8 @@
 	"Configure the Conda environment first.": "Configura el entorno Conda primero.",
 	"Open a workspace folder before changing the default terminal.": "Abre una carpeta de workspace antes de cambiar la terminal predeterminada.",
 	"Default terminal configured and Cursor rule generated for this workspace.": "Terminal predeterminada configurada y regla de Cursor generada para este workspace.",
+	"Default terminal configured and Codex artifacts updated for this workspace.": "Terminal predeterminada configurada y artefactos de Codex actualizados para este workspace.",
+	"Default terminal configured, Cursor rule generated, and Codex artifacts updated for this workspace.": "Terminal predeterminada configurada, regla de Cursor generada y artefactos de Codex actualizados para este workspace.",
 	"Default terminal configured for this workspace.": "Terminal predeterminada configurada para este workspace.",
 	"AI Env (WSL)": "AI Env (WSL)",
 	"AI Env (Linux)": "AI Env (Linux)",

@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { CodexService } from './services/codexService';
 import { CondaService } from './services/condaService';
 import { ExportService } from './services/exportService';
 import { SettingsService } from './services/settingsService';
@@ -19,7 +20,8 @@ import { Platform, PythonEnvType } from './types/configuration';
 export function activate(context: vscode.ExtensionContext) {
 	const settingsService = new SettingsService();
 	const condaService = new CondaService();
-	const terminalService = new TerminalService(settingsService);
+	const codexService = new CodexService(settingsService);
+	const terminalService = new TerminalService(settingsService, codexService);
 	const verificationService = new VerificationService(settingsService);
 	const exportService = new ExportService(settingsService);
 	const statusBar = new StatusBarController(settingsService);

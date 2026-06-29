@@ -18,5 +18,6 @@
 	"configuration.venvPath.description": "Relative path to the venv/virtualenv folder (for example: .venv).",
 	"configuration.condaShPathWslLinux.description": "Path to conda.sh in WSL/Linux.",
 	"configuration.condaShPathMac.description": "Path to conda.sh in macOS.",
-	"configuration.promptOnMissingEnvironment.description": "When enabled, opens the configuration panel automatically if the workspace has no environment selected."
+	"configuration.promptOnMissingEnvironment.description": "When enabled, opens the configuration panel automatically if the workspace has no environment selected.",
+	"configuration.generateCodexArtifacts.description": "When enabled and the Codex extension is installed, generates or updates AGENTS.md and .codex/config.toml when you run Use Prepared Terminal for Commands."
 }

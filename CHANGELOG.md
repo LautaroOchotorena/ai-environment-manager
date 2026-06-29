@@ -4,6 +4,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-06-29
+### Added
+- Codex integration: **Use Prepared Terminal for Commands** generates or updates `AGENTS.md` and `.codex/config.toml` when the Codex extension (`openai.chatgpt`) is installed.
+- Managed blocks in generated files preserve manual content outside the marked sections.
+- `generateCodexArtifacts` workspace setting (default: `true`) to control Codex file generation.
+- On Windows hosts, sets `chatgpt.runCodexInWindowsSubsystemForLinux` to match the configured platform (WSL vs Windows).
+
 ## [0.1.0] - 2026-06-18
 ### Added
 - English and Spanish localization for commands, settings, messages, menus, and status bar (`package.nls` + `vscode.l10n` bundles).

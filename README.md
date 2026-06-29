@@ -25,6 +25,7 @@ You will see the active environment in the status bar and can open prepared term
 - Status bar indicator showing active platform and environment.
 - Prepared terminal launcher with optional default terminal integration.
 - Automatic Cursor rule generation (`.cursor/rules/ai-environment-manager.mdc`) **when running in Cursor**, so Cursor's AI agent activates the correct environment before running commands.
+- Automatic Codex integration **when the Codex extension is installed**: running **Use Prepared Terminal for Commands** generates or updates `AGENTS.md` and `.codex/config.toml`, and sets the WSL workspace setting when needed.
 - Environment verification via VS Code Output Channel.
 - Export requirements.txt for Conda and venv environments.
 - Export environment.yml for Conda environments.
@@ -77,6 +78,7 @@ This extension contributes the following settings:
 - `aiEnvironmentManager.condaShPathWslLinux`: Path to `conda.sh` in WSL/Linux
 - `aiEnvironmentManager.condaShPathMac`: Path to `conda.sh` in macOS
 - `aiEnvironmentManager.promptOnMissingEnvironment`: Open the configuration panel automatically when no environment is selected (default: `true`)
+- `aiEnvironmentManager.generateCodexArtifacts`: Generate or update Codex `AGENTS.md` and `.codex/config.toml` when running **Use Prepared Terminal for Commands** (default: `true`)
 Example:
 
 ```json
@@ -96,10 +98,17 @@ Example:
 ## Known Issues
 
 - Cursor's AI agent runs commands in a fresh shell that ignores VS Code terminal profiles. If you are using **Cursor**, run **Use Prepared Terminal for Commands** to generate a Cursor rule that forces the agent to activate your environment, and set the default terminal profile (for VS Code/Copilot).
+- Codex's agent also ignores terminal profiles. If you use the **Codex** extension (`openai.chatgpt`), run **Use Prepared Terminal for Commands** to generate `AGENTS.md` and `.codex/config.toml` with environment activation instructions.
 
 ## Release Notes
 
 For the full history, see `CHANGELOG.md`.
+
+### 0.2.0 - Codex Integration
+
+- **Use Prepared Terminal for Commands** now generates or updates Codex artifacts (`AGENTS.md`, `.codex/config.toml`) when the Codex extension is installed.
+- On Windows, sets `chatgpt.runCodexInWindowsSubsystemForLinux` based on the selected platform (WSL vs native Windows).
+- Added `generateCodexArtifacts` workspace setting to disable Codex file generation.
 
 ### 0.1.0 - English and Spanish Localization
 
